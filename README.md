@@ -72,27 +72,31 @@ This project represents my ability to turn a practical user problem into a worki
 
 ## Screenshots
 
-Replace the placeholders below with App Store-safe screenshots or short demo GIFs.
+The screenshots below use demo data and App Store-safe UI captures. Real trip screenshots should be cropped or redacted before being published, especially if they contain passenger details, exact pickup/drop-off addresses, earnings history, or personal account information.
 
-### Incoming Offer Analysis
+### One-Tap Offer Analysis
 
-![Incoming offer analysis placeholder](docs/images/offer-analysis-placeholder.png)
-
-### Dynamic Island / Live Activity
-
-![Dynamic Island placeholder](docs/images/dynamic-island-placeholder.png)
+![One-Tap offer analysis](docs/images/one-tap-analysis.png)
 
 ### Shift and Net Income Dashboard
 
-![Dashboard placeholder](docs/images/dashboard-placeholder.png)
+![Shift and net income dashboard](docs/images/dashboard.png)
 
-### Trip Review / History
+### Trip Review / Insights
 
-![Trip review placeholder](docs/images/trip-review-placeholder.png)
+![Trip review and insights](docs/images/trip-review.png)
+
+### Zone Management
+
+![Zone management](docs/images/zone-management.png)
+
+### Settings
+
+![Settings](docs/images/settings.png)
 
 ## Demo Video
 
-![Demo GIF placeholder](docs/images/demo-placeholder.gif)
+A short demo GIF or screen recording can be added here later. It should use demo data or redacted real-world footage.
 
 ## What This Repository Contains
 
