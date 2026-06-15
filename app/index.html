@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tomato</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app-shell" data-view="onboarding">
+    <section class="phone" aria-label="Tomato app preview">
+      <header class="status-bar" aria-hidden="true">
+        <span id="clock">12:33</span>
+        <span class="system-icons">
+          <span class="signal"><i></i><i></i><i></i><i></i></span>
+          <span class="wifi"></span>
+          <span class="battery"></span>
+        </span>
+      </header>
+
+      <section class="onboarding-view" aria-label="Onboarding">
+        <div class="ios-notice" id="iosNotice" aria-live="polite">
+          <div class="ios-head">
+            <div class="notice-logo" aria-hidden="true"></div>
+            <div>
+              <div class="notice-app">Tomato</div>
+              <strong class="notice-title" data-copy="noticeTitle">Good Offer</strong>
+            </div>
+            <div class="notice-now" data-copy="now">now</div>
+          </div>
+          <div class="notice-metrics" data-copy="noticeMetrics">$31/hr · $1.62/mi · 11.5 mi · 26 min</div>
+        </div>
+
+        <div class="screen">
+          <header class="topbar">
+            <div class="tomato-logo" aria-hidden="true"></div>
+            <div>
+              <span class="brand-title">番茄 Tomato</span>
+              <span class="brand-subtitle" data-copy="tagline">Net income driving assistant</span>
+            </div>
+            <div class="tools">
+              <button class="tool-btn" type="button" id="langBtn" aria-label="Toggle language">中</button>
+              <button class="tool-btn" type="button" id="modeBtn" aria-label="Toggle night mode">Night</button>
+            </div>
+          </header>
+
+          <div class="step-progress" aria-label="Onboarding progress">
+            <span class="active"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="slides">
+            <section class="slide active" data-slide="0" data-design-id="Onboarding.Welcome">
+              <div class="panel">
+                <div class="eyebrow" data-copy="stepWelcome">Step 01 / Welcome</div>
+                <h1 data-copy="welcomeTitle">Drive Less, Earn More!</h1>
+                <p class="lead" data-copy="welcomeBody">Tomato helps you judge the offer before you accept it. No account, no password, no platform login.</p>
+                <div class="rule"></div>
+                <div class="feature-list">
+                  <div class="feature">
+                    <div class="feature-icon">$</div>
+                    <div>
+                      <strong data-copy="welcomeOneTitle">See net value</strong>
+                      <span data-copy="welcomeOneBody">Compare fare, time, distance, cost, rating, and area risk in one decision card.</span>
+                    </div>
+                  </div>
+                  <div class="feature">
+                    <div class="feature-icon">1</div>
+                    <div>
+                      <strong data-copy="welcomeTwoTitle">One-tap start</strong>
+                      <span data-copy="welcomeTwoBody">No sign-in wall. Start onboarding and test offer analysis immediately.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="slide" data-slide="1" data-design-id="Onboarding.WhatTomatoDoes">
+              <div class="panel">
+                <div class="eyebrow" data-copy="stepDoes">Step 02 / What Tomato does</div>
+                <h1 data-copy="doesTitle">Understand the offer first.</h1>
+                <p class="lead" data-copy="doesBody">Tomato combines pay, time, distance, cost, rating, and area risk so you can decide faster.</p>
+                <div class="rule"></div>
+                <div class="hero-offer">
+                  <div class="hero-offer-main">
+                    <div>
+                      <div class="rec-label" data-copy="recommend">Accept</div>
+                      <div class="retained" data-copy="retained">Estimated retained</div>
+                      <div class="money">$18.60</div>
+                    </div>
+                    <div class="metric-stack">
+                      <div class="metric-pill"><span data-copy="minutes">Minutes</span><strong>26</strong></div>
+                      <div class="metric-pill green"><span data-copy="netHourly">Net hourly</span><strong>$31/hr</strong></div>
+                    </div>
+                  </div>
+                  <div class="risk-grid">
+                    <div class="risk" data-copy="riskOne">Leaving downtown</div>
+                    <div class="risk" data-copy="riskTwo">Return risk</div>
+                  </div>
+                  <div class="offer-strength"><span></span></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="slide" data-slide="2" data-design-id="Onboarding.OfferPopupTest">
+              <div class="test-panel">
+                <div class="offer-sandbox">
+                  <div class="map-water"></div>
+                  <div class="route-line"></div>
+                  <div class="map-pin a">A</div>
+                  <div class="map-pin b">B</div>
+                  <div class="incoming-offer">
+                    <div class="offer-top">
+                      <div class="platform" data-copy="platform">uberX</div>
+                      <button class="close" type="button" aria-label="Dismiss offer">x</button>
+                    </div>
+                    <div class="fare" data-offer="fare">$24.80</div>
+                    <div class="rating" data-offer="rating">5.00</div>
+                    <div class="route-copy" data-offer="route">10 min (3.4 mi)<br>Downtown pickup<br>16 min (8.1 mi)<br>Airport dropoff</div>
+                  </div>
+                </div>
+                <div class="test-controls">
+                  <button class="test-main" type="button" id="triggerBtn" data-copy="triggerBtn">Trigger popup</button>
+                  <button class="test-secondary" type="button" id="nextOfferBtn" data-copy="nextOfferBtn">Try another offer</button>
+                  <div class="log" id="testLog" data-copy="testLog">Offer popup test is ready.</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="slide" data-slide="3" data-design-id="Onboarding.Ready">
+              <div class="panel">
+                <div class="eyebrow" data-copy="stepReady">Step 04 / Ready</div>
+                <h1 data-copy="readyTitle">Ready for night or day.</h1>
+                <p class="lead" data-copy="readyBody">Tomato uses the same decision language in light mode and night mode, so it stays readable during late shifts.</p>
+                <div class="permission-grid">
+                  <div class="permission">
+                    <div class="perm-icon">N</div>
+                    <div><strong data-copy="permNotice">Notifications</strong><span data-copy="permNoticeBody">Show the verdict while the request is still on screen.</span></div>
+                    <div class="switch"><span></span></div>
+                  </div>
+                  <div class="permission">
+                    <div class="perm-icon">O</div>
+                    <div><strong data-copy="permOffer">Offer recognition</strong><span data-copy="permOfferBody">Read visible offer details for local estimates.</span></div>
+                    <div class="switch"><span></span></div>
+                  </div>
+                  <div class="permission">
+                    <div class="perm-icon">$</div>
+                    <div><strong data-copy="permGoal">Income goal</strong><span data-copy="permGoalBody">Classify offers against the hourly target you choose.</span></div>
+                    <div class="switch"><span></span></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="onboarding-nav">
+            <button class="back" type="button" id="backBtn" data-copy="backBtn">Back</button>
+            <button class="next" type="button" id="nextBtn" data-copy="nextBtn">Continue</button>
+          </footer>
+        </div>
+      </section>
+
+      <section class="home-view" aria-label="Home">
+        <div class="home-content" data-design-id="Home.Dark.Content">
+          <header class="home-topbar" data-design-id="Home.Topbar">
+            <div class="gridicon" data-design-id="Home.Topbar.AppIcon"><span></span><span></span><span></span><span></span></div>
+            <div class="home-brand" data-design-id="Home.Topbar.Brand">番茄 Tomato</div>
+            <button class="home-mode" type="button" id="homeModeBtn" aria-label="Toggle home theme" data-design-id="Home.Topbar.SettingsIcon">☾</button>
+          </header>
+
+          <section class="home-card shift" data-design-id="Home.ShiftCard">
+            <div class="shift-top" data-design-id="Home.ShiftCard.Header">
+              <div>
+                <div class="timer" data-design-id="Home.ShiftCard.Timer" id="shiftTimer">04:12:36</div>
+                <div class="state" data-design-id="Home.ShiftCard.Status"><span class="dot"></span><span data-home="status">Online</span></div>
+              </div>
+              <div class="gps" data-design-id="Home.ShiftCard.Gps"><span data-home="gps">GPS recording</span><br>73.6 km</div>
+            </div>
+            <div class="shift-actions" data-design-id="Home.ShiftCard.Actions">
+              <button class="shift-btn online" type="button" data-design-id="Home.ShiftCard.Actions.Online" data-home="online">Online</button>
+              <button class="shift-btn" type="button" data-design-id="Home.ShiftCard.Actions.Pause" data-home="pause">Pause</button>
+              <button class="shift-btn end" type="button" data-design-id="Home.ShiftCard.Actions.End" data-home="end">End</button>
+            </div>
+          </section>
+
+          <section class="home-card goal" data-design-id="Home.GoalCard">
+            <div>
+              <div class="section-title" data-design-id="Home.GoalCard.Title"><span data-home="goalTitle">Shift net income target</span></div>
+              <div class="income-label" data-design-id="Home.GoalCard.IncomeLabel" data-home="incomeLabel">Estimated net income</div>
+              <div class="income" data-design-id="Home.GoalCard.IncomeValue">$117.60</div>
+              <div class="goal-metrics" data-design-id="Home.GoalCard.Metrics">
+                <div class="big-metric" data-design-id="Home.GoalCard.Metrics.Target"><strong>$150.00</strong><span data-home="target">Target</span></div>
+                <div class="big-metric" data-design-id="Home.GoalCard.Metrics.Remaining"><strong class="left">$32.40</strong><span data-home="remaining">Remaining</span></div>
+              </div>
+              <div class="ledger" data-design-id="Home.GoalCard.Ledger">
+                <div class="row" data-design-id="Home.GoalCard.Ledger.Revenue"><span data-home="revenue">Platform gross</span><span>$139.20</span></div>
+                <div class="row" data-design-id="Home.GoalCard.Ledger.Cost"><span data-home="cost">Estimated cost</span><span class="cost">-$21.60</span></div>
+              </div>
+              <div class="sync" data-design-id="Home.GoalCard.Sync"><span data-home="sync">21:40 synced · GPS cost estimate</span><button type="button" data-design-id="Home.GoalCard.Sync.Button" data-home="syncBtn">Sync</button></div>
+            </div>
+            <div class="goal-progress" data-design-id="Home.GoalCard.Progress"><div class="fill"></div><span class="pct">78</span></div>
+          </section>
+
+          <section class="home-card trip" data-design-id="Home.TripCard">
+            <div class="trip-head" data-design-id="Home.TripCard.Header"><span class="trip-title" data-home="tripTitle">Latest offer analysis</span><span class="pace">Target $26/hr · <strong>$31/hr</strong></span></div>
+            <div class="trip-main" data-design-id="Home.TripCard.Body">
+              <div>
+                <div class="rec" data-design-id="Home.TripCard.Recommendation"><span data-home="take">Accept</span><small data-home="push">On pace</small></div>
+                <div class="take-label" data-design-id="Home.TripCard.TakeLabel" data-home="takeLabel">Estimated retained</div>
+                <div class="take" data-design-id="Home.TripCard.TakeValue">$18.60</div>
+                <div class="badges" data-design-id="Home.TripCard.RiskBadges"><span class="badge" data-home="riskA">Return risk</span><span class="badge" data-home="riskB">Leaves downtown</span></div>
+              </div>
+              <div class="small-grid" data-design-id="Home.TripCard.Metrics">
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Offer"><span data-home="offer">Offer</span><strong>$24.80</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Cost"><span data-home="tripCost">Cost</span><strong class="cost">-$6.20</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Time"><span data-home="time">Time</span><strong>26 min</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Rating"><span data-home="rating">Rating</span><strong class="left">4.91</strong></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <nav class="tabbar" data-design-id="Home.TabBar">
+          <button class="tabitem active" type="button" data-design-id="Home.TabBar.Home"><b>⌂</b><span data-home="tabHome">Home</span></button>
+          <button class="tabitem" type="button" data-design-id="Home.TabBar.Records"><b>≡</b><span data-home="tabRecords">Records</span></button>
+          <button class="tabitem" type="button" data-design-id="Home.TabBar.Settings"><b>⚙</b><span data-home="tabSettings">Settings</span></button>
+        </nav>
+      </section>
+    </section>
+
+    <aside class="side-panel">
+      <div class="view-switch" role="tablist" aria-label="Preview view">
+        <button class="active" type="button" data-view-target="onboarding">Onboarding</button>
+        <button type="button" data-view-target="home">Home</button>
+      </div>
+      <section>
+        <h2>Tomato</h2>
+        <p>Driver net income assistant for judging rideshare offers before accepting.</p>
+      </section>
+      <section>
+        <h2>Implemented Frames</h2>
+        <ul>
+          <li><code>Onboarding.Welcome</code></li>
+          <li><code>Onboarding.WhatTomatoDoes</code></li>
+          <li><code>Onboarding.OfferPopupTest</code></li>
+          <li><code>Onboarding.Ready</code></li>
+          <li><code>Home.Dark</code> / <code>Home.Light</code></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

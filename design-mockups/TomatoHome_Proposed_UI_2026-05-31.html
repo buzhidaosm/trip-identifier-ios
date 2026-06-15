@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tomato Home Proposed UI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(132, 92, 255, .20), transparent 28%),
+        radial-gradient(circle at 82% 8%, rgba(0, 214, 98, .12), transparent 26%),
+        #202025;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
+      color: #f3e8ff;
+    }
+    .board {
+      display: flex;
+      gap: 28px;
+      padding: 26px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .phone {
+      width: 390px;
+      height: 844px;
+      border-radius: 26px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(225, 205, 255, .45);
+      box-shadow: 0 24px 70px rgba(0,0,0,.48);
+    }
+    .phone.dark {
+      background:
+        linear-gradient(180deg, rgba(16, 11, 25, .96), rgba(10, 7, 16, .98)),
+        #100b19;
+    }
+    .phone.light {
+      color: #20202a;
+      border-color: rgba(95, 75, 150, .30);
+      background:
+        linear-gradient(180deg, rgba(250, 249, 255, .96), rgba(238, 241, 248, .98)),
+        #f4f5fa;
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.10) 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: .18;
+      pointer-events: none;
+    }
+    .light::before { opacity: .30; background-image: radial-gradient(circle, rgba(67, 54, 105, .13) 1px, transparent 1px); }
+    .content {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 14px 12px 86px;
+      gap: 12px;
+    }
+    .topbar {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 8px;
+    }
+    .gridicon {
+      width: 23px;
+      height: 23px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+      opacity: .92;
+    }
+    .gridicon span { border-radius: 2px; background: currentColor; }
+    .brand {
+      font-size: 23px;
+      font-weight: 780;
+      letter-spacing: -.2px;
+      flex: 1;
+    }
+    .subtitle {
+      font-size: 11px;
+      font-weight: 650;
+      opacity: .62;
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+    .gear { font-size: 22px; opacity: .88; }
+    .card {
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(233, 218, 255, .11);
+      background: rgba(54, 30, 86, .72);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 16px 40px rgba(0,0,0,.18);
+    }
+    .light .card {
+      background: rgba(255, 255, 255, .78);
+      border-color: rgba(81, 64, 132, .14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 14px 34px rgba(69, 61, 98, .12);
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(255,255,255,.10), transparent 34%, rgba(133,84,255,.10));
+      pointer-events: none;
+    }
+    .shift {
+      height: 152px;
+      padding: 14px 16px 13px;
+      border-color: rgba(0, 255, 88, .30);
+    }
+    .shift-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+    .timer {
+      font-family: "SF Mono", ui-monospace, monospace;
+      font-size: 54px;
+      line-height: .95;
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+    .state {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #00ff58;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 7px;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #00ff58;
+      box-shadow: 0 0 12px rgba(0,255,88,.8);
+    }
+    .gps {
+      font-size: 13px;
+      font-weight: 750;
+      text-align: right;
+      opacity: .62;
+      padding-top: 10px;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .btn {
+      height: 38px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 820;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+    }
+    .btn.online { background: #00f05b; color: #06110a; border: 0; box-shadow: 0 0 24px rgba(0,240,91,.28); }
+    .btn.end { color: #ff8b85; border-color: rgba(255,139,133,.45); }
+    .goal {
+      height: 292px;
+      padding: 15px 15px 14px;
+      display: grid;
+      grid-template-columns: 1fr 34px;
+      gap: 13px;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 760;
+      opacity: .66;
+      letter-spacing: .1px;
+    }
+    .edit { opacity: .45; font-size: 16px; float: right; }
+    .income-label {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 650;
+      opacity: .50;
+    }
+    .income {
+      font-size: 58px;
+      line-height: .96;
+      font-weight: 820;
+      letter-spacing: -2px;
+      color: #dfc7ff;
+      margin-top: 2px;
+    }
+    .light .income { color: #3a2366; }
+    .goal-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 15px 0 11px;
+    }
+    .big-metric {
+      height: 62px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .light .big-metric { background: rgba(79, 59, 133, .06); border-color: rgba(79, 59, 133, .12); }
+    .big-metric strong {
+      font-family: "SF Mono", ui-monospace, monospace;
+      font-size: 24px;
+      line-height: 1;
+    }
+    .big-metric span {
+      font-size: 11px;
+      font-weight: 780;
+      opacity: .56;
+      margin-top: 4px;
+    }
+    .left { color: #ffd400; }
+    .ledger {
+      border-radius: 8px;
+      background: rgba(12, 5, 25, .43);
+      padding: 9px 11px;
+      display: grid;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 780;
+    }
+    .light .ledger { background: rgba(50, 36, 92, .06); }
+    .row { display: flex; justify-content: space-between; }
+    .cost { color: #ff8b85; }
+    .sync {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 13px;
+      font-size: 11px;
+      font-weight: 700;
+      opacity: .52;
+    }
+    .sync button {
+      border: 0;
+      border-radius: 8px;
+      padding: 7px 10px;
+      color: inherit;
+      font-weight: 820;
+      background: rgba(255,255,255,.10);
+    }
+    .progress {
+      height: 100%;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 8px;
+      font-size: 14px;
+      font-weight: 850;
+    }
+    .light .progress { background: rgba(61, 42, 111, .12); }
+    .fill {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 78%;
+      background: linear-gradient(180deg, #ffe04b, #00f05b 42%, #7d4cff);
+      border-radius: inherit;
+      box-shadow: 0 0 18px rgba(0,240,91,.28);
+    }
+    .pct { position: relative; z-index: 2; color: #fff; mix-blend-mode: difference; }
+    .trip {
+      height: 178px;
+      padding: 12px;
+    }
+    .trip-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      z-index: 1;
+      position: relative;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .light .trip-head { border-color: rgba(64, 48, 104, .10); }
+    .trip-title { font-size: 12px; font-weight: 790; opacity: .66; }
+    .pace { font-size: 11px; font-weight: 780; opacity: .68; }
+    .pace strong { color: #00f05b; }
+    .trip-main {
+      display: grid;
+      grid-template-columns: 1fr 146px;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+      padding-top: 8px;
+    }
+    .rec {
+      color: #00ff58;
+      font-size: 29px;
+      font-weight: 850;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rec small {
+      color: inherit;
+      font-size: 12px;
+      font-weight: 780;
+      border: 1px solid rgba(0,255,88,.28);
+      background: rgba(0,255,88,.09);
+      border-radius: 6px;
+      padding: 4px 6px;
+    }
+    .take-label { margin-top: 8px; font-size: 12px; opacity: .52; font-weight: 650; }
+    .take {
+      font-size: 45px;
+      line-height: .95;
+      font-weight: 850;
+      letter-spacing: -2px;
+      color: #00ff58;
+    }
+    .badges { display: flex; gap: 6px; margin-top: 9px; }
+    .badge {
+      color: #ffd146;
+      background: rgba(255,194,36,.13);
+      border: 1px solid rgba(255,194,36,.45);
+      border-radius: 6px;
+      padding: 5px 7px;
+      font-size: 11px;
+      font-weight: 820;
+    }
+    .small-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+    .chip {
+      min-height: 52px;
+      border-radius: 8px;
+      background: rgba(5, 2, 12, .34);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .light .chip { background: rgba(57, 42, 96, .06); border-color: rgba(57,42,96,.08); }
+    .chip span { font-size: 11px; font-weight: 760; opacity: .58; }
+    .chip strong { margin-top: 3px; font-family: "SF Mono", ui-monospace, monospace; font-size: 15px; }
+    .tab {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 68px;
+      background: rgba(45, 43, 49, .92);
+      border-top: 1px solid rgba(255,255,255,.10);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+      z-index: 4;
+    }
+    .light .tab {
+      background: rgba(255,255,255,.88);
+      border-top-color: rgba(67,54,105,.14);
+    }
+    .tabitem {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 760;
+      opacity: .48;
+    }
+    .tabitem.active { color: #dfc7ff; opacity: 1; text-shadow: 0 0 18px rgba(207,169,255,.95); }
+    .light .tabitem.active { color: #5a35a1; text-shadow: none; }
+    .tabitem b { display: block; font-size: 24px; line-height: 1; margin-bottom: 3px; }
+    .caption {
+      width: 390px;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 13px;
+      opacity: .70;
+      font-weight: 650;
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <section>
+      <div class="phone dark" data-design-id="Home.Dark">
+        <div class="content" data-design-id="Home.Dark.Content">
+          <div class="topbar" data-design-id="Home.Topbar">
+            <div class="gridicon" data-design-id="Home.Topbar.AppIcon"><span></span><span></span><span></span><span></span></div>
+            <div class="brand" data-design-id="Home.Topbar.Brand">番茄 Tomato</div>
+            <div class="subtitle" data-design-id="Home.Topbar.Subtitle">净收入驾驶助手</div>
+            <div class="gear" data-design-id="Home.Topbar.SettingsIcon">⚙</div>
+          </div>
+          <section class="card shift" data-design-id="Home.ShiftCard">
+            <div class="shift-top" data-design-id="Home.ShiftCard.Header">
+              <div>
+                <div class="timer" data-design-id="Home.ShiftCard.Timer">04:12:36</div>
+                <div class="state" data-design-id="Home.ShiftCard.Status"><span class="dot"></span>在线中</div>
+              </div>
+              <div class="gps" data-design-id="Home.ShiftCard.Gps">GPS 记录中<br>73.6 km</div>
+            </div>
+            <div class="buttons" data-design-id="Home.ShiftCard.Actions">
+              <div class="btn online" data-design-id="Home.ShiftCard.Actions.Online">在线</div>
+              <div class="btn" data-design-id="Home.ShiftCard.Actions.Pause">暂停</div>
+              <div class="btn end" data-design-id="Home.ShiftCard.Actions.End">结束本班</div>
+            </div>
+          </section>
+          <section class="card goal" data-design-id="Home.GoalCard">
+            <div>
+              <div class="section-title" data-design-id="Home.GoalCard.Title">本班净收入目标 <span class="edit">✎</span></div>
+              <div class="income-label" data-design-id="Home.GoalCard.IncomeLabel">当前预计净收入</div>
+              <div class="income" data-design-id="Home.GoalCard.IncomeValue">$117.60</div>
+              <div class="goal-metrics" data-design-id="Home.GoalCard.Metrics">
+                <div class="big-metric" data-design-id="Home.GoalCard.Metrics.Target"><strong>$150.00</strong><span>目标</span></div>
+                <div class="big-metric" data-design-id="Home.GoalCard.Metrics.Remaining"><strong class="left">$32.40</strong><span>还差</span></div>
+              </div>
+              <div class="ledger" data-design-id="Home.GoalCard.Ledger">
+                <div class="row" data-design-id="Home.GoalCard.Ledger.Revenue"><span>平台流水</span><span>$139.20</span></div>
+                <div class="row" data-design-id="Home.GoalCard.Ledger.Cost"><span>估算成本</span><span class="cost">-$21.60</span></div>
+              </div>
+              <div class="sync" data-design-id="Home.GoalCard.Sync"><span>21:40 同步 · GPS 成本估算</span><button data-design-id="Home.GoalCard.Sync.Button">同步流水</button></div>
+            </div>
+            <div class="progress" data-design-id="Home.GoalCard.Progress"><div class="fill"></div><span class="pct">78</span></div>
+          </section>
+          <section class="card trip" data-design-id="Home.TripCard">
+            <div class="trip-head" data-design-id="Home.TripCard.Header"><span class="trip-title">最新订单分析</span><span class="pace">目标 $26/hr · <strong>预计 $31/hr</strong></span></div>
+            <div class="trip-main" data-design-id="Home.TripCard.Body">
+              <div>
+                <div class="rec" data-design-id="Home.TripCard.Recommendation">推荐接 <small>推进目标</small></div>
+                <div class="take-label" data-design-id="Home.TripCard.TakeLabel">预计可留</div>
+                <div class="take" data-design-id="Home.TripCard.TakeValue">$18.60</div>
+                <div class="badges" data-design-id="Home.TripCard.RiskBadges"><span class="badge">△ 空返风险</span><span class="badge">△ 离开 Downtown</span></div>
+              </div>
+              <div class="small-grid" data-design-id="Home.TripCard.Metrics">
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Offer"><span>报价</span><strong>$24.80</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Cost"><span>成本</span><strong class="cost">-$6.20</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Time"><span>时间</span><strong>26 min</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Rating"><span>评分</span><strong class="left">★4.91</strong></div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <nav class="tab" data-design-id="Home.TabBar"><div class="tabitem active" data-design-id="Home.TabBar.Home"><b>⌂</b>主页</div><div class="tabitem" data-design-id="Home.TabBar.Records"><b>⌁</b>记录</div><div class="tabitem" data-design-id="Home.TabBar.Settings"><b>⚙</b>设置</div></nav>
+      </div>
+      <div class="caption">夜间 / 车内：保留原本紫色科技感，减少小字密度</div>
+    </section>
+    <section>
+      <div class="phone light" data-design-id="Home.Light">
+        <div class="content" data-design-id="Home.Light.Content">
+          <div class="topbar" data-design-id="Home.Topbar">
+            <div class="gridicon" data-design-id="Home.Topbar.AppIcon"><span></span><span></span><span></span><span></span></div>
+            <div class="brand" data-design-id="Home.Topbar.Brand">番茄 Tomato</div>
+            <div class="subtitle" data-design-id="Home.Topbar.Subtitle">净收入驾驶助手</div>
+            <div class="gear" data-design-id="Home.Topbar.SettingsIcon">⚙</div>
+          </div>
+          <section class="card shift" data-design-id="Home.ShiftCard">
+            <div class="shift-top" data-design-id="Home.ShiftCard.Header">
+              <div>
+                <div class="timer" data-design-id="Home.ShiftCard.Timer">04:12:36</div>
+                <div class="state" data-design-id="Home.ShiftCard.Status"><span class="dot"></span>在线中</div>
+              </div>
+              <div class="gps" data-design-id="Home.ShiftCard.Gps">GPS 记录中<br>73.6 km</div>
+            </div>
+            <div class="buttons" data-design-id="Home.ShiftCard.Actions">
+              <div class="btn online" data-design-id="Home.ShiftCard.Actions.Online">在线</div>
+              <div class="btn" data-design-id="Home.ShiftCard.Actions.Pause">暂停</div>
+              <div class="btn end" data-design-id="Home.ShiftCard.Actions.End">结束本班</div>
+            </div>
+          </section>
+          <section class="card goal" data-design-id="Home.GoalCard">
+            <div>
+              <div class="section-title" data-design-id="Home.GoalCard.Title">本班净收入目标 <span class="edit">✎</span></div>
+              <div class="income-label" data-design-id="Home.GoalCard.IncomeLabel">当前预计净收入</div>
+              <div class="income" data-design-id="Home.GoalCard.IncomeValue">$117.60</div>
+              <div class="goal-metrics" data-design-id="Home.GoalCard.Metrics">
+                <div class="big-metric" data-design-id="Home.GoalCard.Metrics.Target"><strong>$150.00</strong><span>目标</span></div>
+                <div class="big-metric" data-design-id="Home.GoalCard.Metrics.Remaining"><strong class="left">$32.40</strong><span>还差</span></div>
+              </div>
+              <div class="ledger" data-design-id="Home.GoalCard.Ledger">
+                <div class="row" data-design-id="Home.GoalCard.Ledger.Revenue"><span>平台流水</span><span>$139.20</span></div>
+                <div class="row" data-design-id="Home.GoalCard.Ledger.Cost"><span>估算成本</span><span class="cost">-$21.60</span></div>
+              </div>
+              <div class="sync" data-design-id="Home.GoalCard.Sync"><span>21:40 同步 · GPS 成本估算</span><button data-design-id="Home.GoalCard.Sync.Button">同步流水</button></div>
+            </div>
+            <div class="progress" data-design-id="Home.GoalCard.Progress"><div class="fill"></div><span class="pct">78</span></div>
+          </section>
+          <section class="card trip" data-design-id="Home.TripCard">
+            <div class="trip-head" data-design-id="Home.TripCard.Header"><span class="trip-title">最新订单分析</span><span class="pace">目标 $26/hr · <strong>预计 $31/hr</strong></span></div>
+            <div class="trip-main" data-design-id="Home.TripCard.Body">
+              <div>
+                <div class="rec" data-design-id="Home.TripCard.Recommendation">推荐接 <small>推进目标</small></div>
+                <div class="take-label" data-design-id="Home.TripCard.TakeLabel">预计可留</div>
+                <div class="take" data-design-id="Home.TripCard.TakeValue">$18.60</div>
+                <div class="badges" data-design-id="Home.TripCard.RiskBadges"><span class="badge">△ 空返风险</span><span class="badge">△ 离开 Downtown</span></div>
+              </div>
+              <div class="small-grid" data-design-id="Home.TripCard.Metrics">
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Offer"><span>报价</span><strong>$24.80</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Cost"><span>成本</span><strong class="cost">-$6.20</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Time"><span>时间</span><strong>26 min</strong></div>
+                <div class="chip" data-design-id="Home.TripCard.Metrics.Rating"><span>评分</span><strong class="left">★4.91</strong></div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <nav class="tab" data-design-id="Home.TabBar"><div class="tabitem active" data-design-id="Home.TabBar.Home"><b>⌂</b>主页</div><div class="tabitem" data-design-id="Home.TabBar.Records"><b>⌁</b>记录</div><div class="tabitem" data-design-id="Home.TabBar.Settings"><b>⚙</b>设置</div></nav>
+      </div>
+      <div class="caption">白天 / 浅色：更高对比，不再用浅橙灰导致看不清</div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tomato Onboarding Proposed UI</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #17181c;
+      --phone: #08090b;
+      --panel: #121417;
+      --panel-2: #191c20;
+      --line: rgba(255,255,255,.10);
+      --line-strong: rgba(255,255,255,.18);
+      --text: #f7f8fa;
+      --muted: #9da3ad;
+      --soft: #cbd0d7;
+      --green: #38d77a;
+      --green-2: #1daa61;
+      --yellow: #f4c84a;
+      --red: #ff5e57;
+      --blue: #6ea8ff;
+      --shadow: 0 28px 80px rgba(0,0,0,.42);
+      --radius-phone: 34px;
+      --radius-card: 8px;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(135deg, rgba(56,215,122,.08), transparent 32%),
+        linear-gradient(315deg, rgba(110,168,255,.10), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    button {
+      border: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .board {
+      width: min(1180px, 100%);
+      display: grid;
+      grid-template-columns: 390px minmax(320px, 1fr);
+      gap: 30px;
+      align-items: center;
+      padding: 28px;
+    }
+    .phone {
+      width: 390px;
+      height: 844px;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-phone);
+      border: 1px solid rgba(255,255,255,.18);
+      background: var(--phone);
+      box-shadow: var(--shadow);
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 10px;
+      width: 118px;
+      height: 31px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: #000;
+      z-index: 20;
+      box-shadow: inset 0 -1px 0 rgba(255,255,255,.10);
+    }
+    .status {
+      height: 50px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 26px 10px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 760;
+      letter-spacing: .1px;
+    }
+    .signal {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .bars {
+      display: grid;
+      grid-auto-flow: column;
+      gap: 2px;
+      align-items: end;
+      height: 14px;
+    }
+    .bars span {
+      width: 3px;
+      border-radius: 2px;
+      background: #fff;
+      opacity: .95;
+    }
+    .bars span:nth-child(1) { height: 6px; }
+    .bars span:nth-child(2) { height: 8px; }
+    .bars span:nth-child(3) { height: 11px; }
+    .bars span:nth-child(4) { height: 14px; opacity: .45; }
+    .battery {
+      min-width: 34px;
+      height: 18px;
+      border-radius: 5px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.90);
+      color: #0a0d10;
+      font-size: 11px;
+      font-weight: 850;
+      padding: 0 5px;
+    }
+    .screen {
+      position: absolute;
+      inset: 50px 0 0;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 24px 20px;
+    }
+    .top {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+    .app-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #48e884, #1daa61);
+      color: #07110a;
+      box-shadow: 0 12px 28px rgba(56,215,122,.28);
+      position: relative;
+      overflow: hidden;
+    }
+    .app-mark::before {
+      content: "";
+      width: 19px;
+      height: 10px;
+      border: 2px solid currentColor;
+      border-radius: 8px 8px 5px 5px;
+      border-bottom-width: 3px;
+      transform: translateY(1px);
+    }
+    .app-mark::after {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 13px 0 0 currentColor;
+      top: 22px;
+      left: 9px;
+    }
+    .brand {
+      flex: 1;
+      font-size: 23px;
+      line-height: 1;
+      font-weight: 820;
+    }
+    .lang {
+      width: 34px;
+      height: 30px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 850;
+    }
+    .slides {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding-top: 20px;
+    }
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-art {
+      height: 350px;
+      position: relative;
+      margin: 4px -6px 0;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(56,215,122,.10), transparent 68%),
+        #0d1110;
+    }
+    .route-phone {
+      position: absolute;
+      inset: 44px 38px 14px;
+      border: 2px solid rgba(255,255,255,.10);
+      border-bottom: 0;
+      border-radius: 42px 42px 0 0;
+      background: linear-gradient(180deg, rgba(56,215,122,.05), rgba(56,215,122,.01));
+    }
+    .route {
+      position: absolute;
+      inset: 68px 0 0;
+    }
+    .route-line {
+      position: absolute;
+      background: var(--green);
+      box-shadow: 0 0 18px rgba(56,215,122,.70);
+    }
+    .route-line.one { left: 142px; top: 78px; width: 5px; height: 170px; }
+    .route-line.two { left: 142px; top: 78px; width: 118px; height: 5px; }
+    .route-line.three { left: 256px; top: 24px; width: 5px; height: 59px; }
+    .route-dot {
+      position: absolute;
+      left: 130px;
+      top: 66px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 5px solid var(--green);
+      background: #dfffea;
+      box-shadow: 0 0 0 10px rgba(56,215,122,.18);
+    }
+    .hero-notice {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      top: 82px;
+      min-height: 108px;
+      border-radius: 8px;
+      background: rgba(24,27,31,.94);
+      border: 1px solid rgba(255,255,255,.11);
+      box-shadow: 0 20px 46px rgba(0,0,0,.36);
+      padding: 13px 15px 12px;
+    }
+    .notice-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 850;
+    }
+    .notice-title span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .notice-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding-top: 11px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      margin-top: 9px;
+    }
+    .notice-grid strong {
+      display: block;
+      font-size: 24px;
+      line-height: .95;
+      font-weight: 860;
+    }
+    .notice-grid span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 720;
+    }
+    h1 {
+      margin: 22px 0 0;
+      font-size: 34px;
+      line-height: 1.04;
+      font-weight: 880;
+      letter-spacing: 0;
+    }
+    .lead {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.34;
+      font-weight: 560;
+    }
+    .proof-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 17px;
+    }
+    .proof {
+      min-height: 66px;
+      border-radius: var(--radius-card);
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      padding: 10px;
+    }
+    .proof strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 840;
+    }
+    .proof span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 650;
+    }
+    .steps {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .step {
+      min-height: 92px;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: start;
+      border-radius: var(--radius-card);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 13px;
+    }
+    .step-num {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(56,215,122,.14);
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 870;
+    }
+    .step strong {
+      display: block;
+      font-size: 17px;
+      font-weight: 820;
+    }
+    .step span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 570;
+    }
+    .demo-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .demo-map {
+      height: 388px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(155deg, #252b34, #15191f 64%);
+      background-size: 42px 42px, 42px 42px, auto;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .map-water {
+      position: absolute;
+      width: 260px;
+      height: 160px;
+      right: -45px;
+      bottom: -30px;
+      border-radius: 55% 45% 0 0;
+      background: rgba(83,104,132,.45);
+    }
+    .map-road {
+      position: absolute;
+      left: 166px;
+      top: 40px;
+      width: 8px;
+      height: 250px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.78);
+      transform: rotate(-18deg);
+      box-shadow: 0 0 0 2px rgba(0,0,0,.14);
+    }
+    .map-road::before,
+    .map-road::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.78);
+    }
+    .map-road::before {
+      height: 150px;
+      left: 60px;
+      top: -2px;
+      transform: rotate(42deg);
+      transform-origin: top center;
+    }
+    .map-road::after {
+      height: 110px;
+      left: -50px;
+      top: 135px;
+      transform: rotate(42deg);
+      transform-origin: top center;
+    }
+    .pin {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #07110a;
+      background: var(--green);
+      box-shadow: 0 0 0 8px rgba(56,215,122,.16);
+      font-size: 12px;
+      font-weight: 880;
+    }
+    .pin.start { left: 152px; top: 214px; }
+    .pin.end { left: 218px; top: 92px; background: var(--blue); color: #08101d; box-shadow: 0 0 0 8px rgba(110,168,255,.16); }
+    .offer-card {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 26px;
+      min-height: 168px;
+      border-radius: 12px;
+      background: rgba(12,13,15,.94);
+      border: 1px solid rgba(255,255,255,.70);
+      box-shadow: 0 22px 60px rgba(0,0,0,.46);
+      padding: 16px 16px 14px;
+    }
+    .offer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .platform {
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 7px;
+      background: #e8e9eb;
+      color: #121417;
+      padding: 0 9px;
+      font-size: 17px;
+      font-weight: 820;
+    }
+    .close {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255,255,255,.10);
+      color: #d9dde4;
+      font-size: 26px;
+      line-height: 1;
+    }
+    .price {
+      margin-top: 11px;
+      font-size: 47px;
+      line-height: .95;
+      font-weight: 870;
+      letter-spacing: 0;
+    }
+    .trip-lines {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      color: #d4d8de;
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 670;
+    }
+    .rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 25px;
+      border-radius: 7px;
+      background: rgba(255,255,255,.14);
+      padding: 0 8px;
+      color: #e9edf2;
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .system-notice {
+      position: absolute;
+      left: 11px;
+      right: 11px;
+      top: -126px;
+      z-index: 30;
+      min-height: 104px;
+      border-radius: 22px;
+      background: rgba(239,241,244,.94);
+      border: 1px solid rgba(255,255,255,.75);
+      box-shadow: 0 18px 46px rgba(0,0,0,.36);
+      color: #111318;
+      padding: 14px 15px 12px;
+      transition: top .46s cubic-bezier(.2,.8,.2,1);
+    }
+    .system-notice.show { top: 44px; }
+    .notice-row {
+      display: grid;
+      grid-template-columns: 40px 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .notice-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: var(--green-2);
+      display: grid;
+      place-items: center;
+      color: #06100a;
+      position: relative;
+    }
+    .notice-icon::before {
+      content: "";
+      width: 22px;
+      height: 12px;
+      border: 2px solid currentColor;
+      border-radius: 8px 8px 5px 5px;
+      border-bottom-width: 3px;
+    }
+    .notice-app {
+      color: #6b7078;
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+    .notice-copy {
+      display: block;
+      margin-top: 1px;
+      font-size: 19px;
+      line-height: 1.08;
+      font-weight: 870;
+    }
+    .notice-time {
+      align-self: start;
+      color: #6b7078;
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .notice-metrics {
+      margin: 8px 0 0 50px;
+      color: #181b20;
+      font-size: 18px;
+      line-height: 1.25;
+      font-weight: 620;
+      white-space: nowrap;
+    }
+    .demo-caption {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 570;
+    }
+    .permission-card {
+      margin-top: 12px;
+      border-radius: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .permission-row {
+      min-height: 76px;
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .permission-row:last-child { border-bottom: 0; }
+    .perm-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(56,215,122,.14);
+      color: var(--green);
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .permission-row strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 830;
+    }
+    .permission-row span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+      font-weight: 570;
+    }
+    .toggle {
+      width: 46px;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(56,215,122,.24);
+      border: 1px solid rgba(56,215,122,.46);
+      padding: 2px;
+    }
+    .toggle span {
+      display: block;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-left: 18px;
+    }
+    .nav {
+      flex: 0 0 auto;
+      padding-top: 10px;
+    }
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin: 0 0 14px;
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.28);
+    }
+    .dot.active {
+      width: 24px;
+      background: var(--green);
+    }
+    .actions {
+      display: grid;
+      gap: 10px;
+    }
+    .primary,
+    .secondary {
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 860;
+    }
+    .primary {
+      background: var(--green);
+      color: #06110a;
+      box-shadow: 0 16px 34px rgba(56,215,122,.24);
+    }
+    .secondary {
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line-strong);
+      color: var(--text);
+    }
+    .ghost {
+      height: 40px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      background: transparent;
+      font-size: 14px;
+      font-weight: 760;
+    }
+    .side {
+      min-height: 844px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+    .spec {
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.11);
+      background: rgba(255,255,255,.045);
+      padding: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+    .spec h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+      font-weight: 860;
+      letter-spacing: 0;
+    }
+    .spec p {
+      margin: 10px 0 0;
+      color: var(--soft);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+    .spec ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--soft);
+      font-size: 14px;
+      line-height: 1.48;
+    }
+    .spec li { margin: 6px 0; }
+    .copy-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .copy-cell {
+      border-radius: 8px;
+      background: rgba(0,0,0,.20);
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 12px;
+    }
+    .copy-cell b {
+      display: block;
+      color: var(--green);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .copy-cell span {
+      display: block;
+      margin-top: 6px;
+      color: #f4f6f8;
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+    @media (max-width: 860px) {
+      body { place-items: start center; }
+      .board {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 16px;
+      }
+      .phone {
+        width: min(390px, calc(100vw - 24px));
+        height: min(844px, calc((100vw - 24px) * 2.164));
+        min-height: 720px;
+      }
+      .side {
+        min-height: auto;
+        width: min(390px, calc(100vw - 24px));
+      }
+      .copy-table { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <section class="phone" aria-label="Tomato onboarding prototype">
+      <div class="status">
+        <span>18:05</span>
+        <div class="signal">
+          <div class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <span>Wi-Fi</span>
+          <span class="battery">52</span>
+        </div>
+      </div>
+      <div class="system-notice" id="systemNotice" aria-live="polite">
+        <div class="notice-row">
+          <div class="notice-icon" aria-hidden="true"></div>
+          <div>
+            <div class="notice-app">Tomato</div>
+            <strong class="notice-copy" data-copy="noticeTitle">Good Offer</strong>
+          </div>
+          <div class="notice-time">now</div>
+        </div>
+        <div class="notice-metrics" data-copy="noticeMetrics">$33/hr · $2.82/mi · 7.6 mi · 39 min</div>
+      </div>
+      <div class="screen">
+        <header class="top">
+          <div class="app-mark" aria-hidden="true"></div>
+          <div class="brand">Tomato</div>
+          <button class="lang" type="button" id="languageToggle" aria-label="Switch language">中</button>
+        </header>
+
+        <div class="slides">
+          <section class="slide active" data-slide="0" data-design-id="Onboarding.Welcome">
+            <div class="hero-art" aria-hidden="true">
+              <div class="route-phone"></div>
+              <div class="route">
+                <div class="route-line one"></div>
+                <div class="route-line two"></div>
+                <div class="route-line three"></div>
+                <div class="route-dot"></div>
+              </div>
+              <div class="hero-notice">
+                <div class="notice-title"><span></span><b data-copy="heroNotice">Good Offer</b></div>
+                <div class="notice-grid">
+                  <div><strong>$33</strong><span>/hr</span></div>
+                  <div><strong>$2.82</strong><span>/mi</span></div>
+                  <div><strong>7.6</strong><span>miles</span></div>
+                  <div><strong>39</strong><span>min</span></div>
+                </div>
+              </div>
+            </div>
+            <h1 data-copy="welcomeTitle">Drive Less, Earn More!</h1>
+            <p class="lead" data-copy="welcomeBody">Tomato helps you spot stronger rideshare offers before you accept them.</p>
+            <div class="proof-row">
+              <div class="proof"><strong data-copy="proofOneTitle">No account</strong><span data-copy="proofOneBody">Start without email, password, or platform login.</span></div>
+              <div class="proof"><strong data-copy="proofTwoTitle">Fast math</strong><span data-copy="proofTwoBody">See hourly rate, distance pay, and trip time at a glance.</span></div>
+            </div>
+          </section>
+
+          <section class="slide" data-slide="1" data-design-id="Onboarding.HowItWorks">
+            <h1 data-copy="howTitle">Know the offer before it costs you time.</h1>
+            <p class="lead" data-copy="howBody">Tomato turns each incoming offer into a simple accept-or-skip signal.</p>
+            <div class="steps">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div><strong data-copy="stepOneTitle">Detect the offer</strong><span data-copy="stepOneBody">When an offer appears, Tomato reads the key numbers needed for a quick decision.</span></div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div><strong data-copy="stepTwoTitle">Estimate real value</strong><span data-copy="stepTwoBody">We compare pay, miles, minutes, and your goal so the math is not on you.</span></div>
+              </div>
+              <div class="step">
+                <div class="step-num">3</div>
+                <div><strong data-copy="stepThreeTitle">Notify in time</strong><span data-copy="stepThreeBody">A time-sensitive alert gives you the recommendation while the offer is still actionable.</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-slide="2" data-design-id="Onboarding.TryOffer">
+            <div class="demo-wrap">
+              <div class="demo-map">
+                <div class="map-water"></div>
+                <div class="map-road"></div>
+                <div class="pin start">A</div>
+                <div class="pin end">B</div>
+                <div class="offer-card">
+                  <div class="offer-top">
+                    <div class="platform" data-copy="platform">uberX</div>
+                    <button class="close" type="button" aria-label="Close offer">x</button>
+                  </div>
+                  <div class="price" data-copy="offerPrice">$33.00</div>
+                  <div class="rating" data-copy="rating">5.00</div>
+                  <div class="trip-lines" data-copy="offerRoute">17 min (3.1 mi)<br>Downtown pickup<br>22 min (4.5 mi)<br>Airport dropoff</div>
+                </div>
+              </div>
+              <p class="demo-caption" data-copy="tryBody">This preview simulates the real onboarding moment: Tomato starts offer recognition, then displays a notification instead of a static in-app image.</p>
+            </div>
+          </section>
+
+          <section class="slide" data-slide="3" data-design-id="Onboarding.Ready">
+            <h1 data-copy="readyTitle">Ready for your next shift.</h1>
+            <p class="lead" data-copy="readyBody">Enable the two signals Tomato needs, then start driving with offer analysis on standby.</p>
+            <div class="permission-card">
+              <div class="permission-row">
+                <div class="perm-icon">N</div>
+                <div><strong data-copy="permOneTitle">Notifications</strong><span data-copy="permOneBody">Show the offer verdict while the request is still on screen.</span></div>
+                <div class="toggle" aria-hidden="true"><span></span></div>
+              </div>
+              <div class="permission-row">
+                <div class="perm-icon">O</div>
+                <div><strong data-copy="permTwoTitle">Offer recognition</strong><span data-copy="permTwoBody">Read visible offer details needed for local earnings estimates.</span></div>
+                <div class="toggle" aria-hidden="true"><span></span></div>
+              </div>
+              <div class="permission-row">
+                <div class="perm-icon">$</div>
+                <div><strong data-copy="permThreeTitle">Goal setup</strong><span data-copy="permThreeBody">Use your hourly target to classify good, fair, and bad offers.</span></div>
+                <div class="toggle" aria-hidden="true"><span></span></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="nav">
+          <div class="dots" aria-label="Onboarding progress">
+            <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+          <div class="actions">
+            <button class="secondary" type="button" id="tryOffer" data-copy="tryButton">Try another offer</button>
+            <button class="primary" type="button" id="primaryAction" data-copy="primaryButton">Start setup</button>
+            <button class="ghost" type="button" id="backAction" data-copy="backButton">Back</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="spec">
+        <h2>Recommended onboarding flow</h2>
+        <p>Use a four-step first-run flow: welcome promise, how it works, live offer demo, then permission readiness. Keep the first screen login-free and make that absence a product advantage.</p>
+        <ul>
+          <li><b>Opening hook:</b> "Drive Less, Earn More!" followed by careful explanatory copy.</li>
+          <li><b>Core demo:</b> entering the Try Offer step automatically starts recognition and shows a time-sensitive notification.</li>
+          <li><b>CTA logic:</b> "Try another offer" cycles examples; "Continue" advances the flow.</li>
+          <li><b>Technical copy rule:</b> say "helps", "estimates", and "classifies"; avoid guaranteed earnings claims.</li>
+        </ul>
+      </section>
+      <section class="spec">
+        <h2>Approved copy direction</h2>
+        <div class="copy-table">
+          <div class="copy-cell"><b>EN</b><span>Drive Less, Earn More!</span></div>
+          <div class="copy-cell"><b>ZH-HANS</b><span>少跑冤枉路，多留净收入。</span></div>
+          <div class="copy-cell"><b>EN</b><span>No account required. Start without email, password, or platform login.</span></div>
+          <div class="copy-cell"><b>ZH-HANS</b><span>无需账号。无需邮箱、密码或平台登录即可开始。</span></div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+    const offers = [
+      {
+        verdict: "Good Offer",
+        verdictZh: "好订单",
+        metrics: "$33/hr · $2.82/mi · 7.6 mi · 39 min",
+        metricsZh: "$33/小时 · $2.82/英里 · 7.6 英里 · 39 分钟",
+        price: "$33.00",
+        rating: "5.00",
+        route: "17 min (3.1 mi)<br>Downtown pickup<br>22 min (4.5 mi)<br>Airport dropoff",
+        routeZh: "17 分钟 (3.1 英里)<br>市中心上车<br>22 分钟 (4.5 英里)<br>机场下车"
+      },
+      {
+        verdict: "Bad Offer",
+        verdictZh: "低效订单",
+        metrics: "$15/hr · $0.52/mi · 24.0 mi · 58 min",
+        metricsZh: "$15/小时 · $0.52/英里 · 24.0 英里 · 58 分钟",
+        price: "$12.50",
+        rating: "4.86",
+        route: "24 min (10.9 mi)<br>Suburban pickup<br>34 min (13.1 mi)<br>Low-demand dropoff",
+        routeZh: "24 分钟 (10.9 英里)<br>郊区上车<br>34 分钟 (13.1 英里)<br>低需求区域下车"
+      },
+      {
+        verdict: "Fair Offer",
+        verdictZh: "一般订单",
+        metrics: "$24/hr · $1.41/mi · 11.2 mi · 36 min",
+        metricsZh: "$24/小时 · $1.41/英里 · 11.2 英里 · 36 分钟",
+        price: "$15.80",
+        rating: "4.94",
+        route: "12 min (2.6 mi)<br>Hotel pickup<br>24 min (8.6 mi)<br>Midtown dropoff",
+        routeZh: "12 分钟 (2.6 英里)<br>酒店上车<br>24 分钟 (8.6 英里)<br>城中区下车"
+      }
+    ];
+
+    const copy = {
+      en: {
+        heroNotice: "Good Offer",
+        welcomeTitle: "Drive Less, Earn More!",
+        welcomeBody: "Tomato helps you spot stronger rideshare offers before you accept them.",
+        proofOneTitle: "No account",
+        proofOneBody: "Start without email, password, or platform login.",
+        proofTwoTitle: "Fast math",
+        proofTwoBody: "See hourly rate, distance pay, and trip time at a glance.",
+        howTitle: "Know the offer before it costs you time.",
+        howBody: "Tomato turns each incoming offer into a simple accept-or-skip signal.",
+        stepOneTitle: "Detect the offer",
+        stepOneBody: "When an offer appears, Tomato reads the key numbers needed for a quick decision.",
+        stepTwoTitle: "Estimate real value",
+        stepTwoBody: "We compare pay, miles, minutes, and your goal so the math is not on you.",
+        stepThreeTitle: "Notify in time",
+        stepThreeBody: "A time-sensitive alert gives you the recommendation while the offer is still actionable.",
+        platform: "uberX",
+        tryBody: "This preview simulates the real onboarding moment: Tomato starts offer recognition, then displays a notification instead of a static in-app image.",
+        readyTitle: "Ready for your next shift.",
+        readyBody: "Enable the two signals Tomato needs, then start driving with offer analysis on standby.",
+        permOneTitle: "Notifications",
+        permOneBody: "Show the offer verdict while the request is still on screen.",
+        permTwoTitle: "Offer recognition",
+        permTwoBody: "Read visible offer details needed for local earnings estimates.",
+        permThreeTitle: "Goal setup",
+        permThreeBody: "Use your hourly target to classify good, fair, and bad offers.",
+        primaryBySlide: ["Start setup", "Continue", "Continue", "Enter Tomato"],
+        backButton: "Back",
+        tryButton: "Try another offer"
+      },
+      zh: {
+        heroNotice: "好订单",
+        welcomeTitle: "Drive Less, Earn More!",
+        welcomeBody: "Tomato 帮你在接单前快速识别更值得跑的订单。",
+        proofOneTitle: "无需账号",
+        proofOneBody: "无需邮箱、密码或平台登录即可开始。",
+        proofTwoTitle: "快速算账",
+        proofTwoBody: "一眼看懂时薪、每英里收入和订单耗时。",
+        howTitle: "在订单消耗时间前，先看清它值不值。",
+        howBody: "Tomato 把每个新订单转成清晰的接单或跳过信号。",
+        stepOneTitle: "识别订单",
+        stepOneBody: "订单出现时，Tomato 读取快速决策所需的关键数字。",
+        stepTwoTitle: "估算真实价值",
+        stepTwoBody: "我们结合收入、里程、时间和目标，替你完成判断。",
+        stepThreeTitle: "及时提醒",
+        stepThreeBody: "在订单还可操作时，用时间敏感通知给出建议。",
+        platform: "uberX",
+        tryBody: "这个预览模拟真实 onboarding 瞬间：Tomato 启动订单识别，然后展示通知，而不是放一张 app 内静态图。",
+        readyTitle: "下一班，现在准备好了。",
+        readyBody: "开启 Tomato 需要的两个信号，然后带着订单分析上路。",
+        permOneTitle: "通知",
+        permOneBody: "在订单还显示时，把判断结果推送给你。",
+        permTwoTitle: "订单识别",
+        permTwoBody: "读取可见订单信息，用于本地净收入估算。",
+        permThreeTitle: "目标设置",
+        permThreeBody: "根据你的时薪目标分类好、一般和低效订单。",
+        primaryBySlide: ["开始设置", "继续", "继续", "进入 Tomato"],
+        backButton: "返回",
+        tryButton: "再试一个订单"
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedSlide = Number(params.get("slide"));
+    let slide = Number.isInteger(requestedSlide) ? Math.min(Math.max(requestedSlide, 0), 3) : 0;
+    let offerIndex = 0;
+    let language = params.get("lang") === "zh" ? "zh" : "en";
+    const slideEls = [...document.querySelectorAll(".slide")];
+    const dots = [...document.querySelectorAll(".dot")];
+    const primary = document.getElementById("primaryAction");
+    const back = document.getElementById("backAction");
+    const tryOffer = document.getElementById("tryOffer");
+    const systemNotice = document.getElementById("systemNotice");
+    const languageToggle = document.getElementById("languageToggle");
+
+    function showNotice() {
+      systemNotice.classList.remove("show");
+      window.setTimeout(() => systemNotice.classList.add("show"), 240);
+      window.setTimeout(() => systemNotice.classList.remove("show"), 4200);
+    }
+
+    function applyOfferContent() {
+      const offer = offers[offerIndex];
+      document.querySelector('[data-copy="noticeTitle"]').textContent = language === "zh" ? offer.verdictZh : offer.verdict;
+      document.querySelector('[data-copy="noticeMetrics"]').textContent = language === "zh" ? offer.metricsZh : offer.metrics;
+      document.querySelector('[data-copy="offerPrice"]').textContent = offer.price;
+      document.querySelector('[data-copy="rating"]').textContent = offer.rating;
+      document.querySelector('[data-copy="offerRoute"]').innerHTML = language === "zh" ? offer.routeZh : offer.route;
+    }
+
+    function renderOffer(next = false) {
+      if (next) offerIndex = (offerIndex + 1) % offers.length;
+      applyOfferContent();
+      showNotice();
+    }
+
+    function updateCopy() {
+      const dict = copy[language];
+      Object.keys(dict).forEach(key => {
+        if (key === "primaryBySlide") return;
+        const node = document.querySelector(`[data-copy="${key}"]`);
+        if (node) node.textContent = dict[key];
+      });
+      primary.textContent = dict.primaryBySlide[slide];
+      languageToggle.textContent = language === "en" ? "中" : "EN";
+      applyOfferContent();
+    }
+
+    function renderSlide() {
+      slideEls.forEach((el, index) => el.classList.toggle("active", index === slide));
+      dots.forEach((el, index) => el.classList.toggle("active", index === slide));
+      primary.textContent = copy[language].primaryBySlide[slide];
+      back.style.visibility = slide === 0 ? "hidden" : "visible";
+      tryOffer.style.display = slide === 2 ? "grid" : "none";
+      if (slide !== 2) systemNotice.classList.remove("show");
+      if (slide === 2) renderOffer(false);
+    }
+
+    primary.addEventListener("click", () => {
+      slide = Math.min(slide + 1, slideEls.length - 1);
+      renderSlide();
+    });
+    back.addEventListener("click", () => {
+      slide = Math.max(slide - 1, 0);
+      renderSlide();
+    });
+    tryOffer.addEventListener("click", () => renderOffer(true));
+    languageToggle.addEventListener("click", () => {
+      language = language === "en" ? "zh" : "en";
+      updateCopy();
+      renderSlide();
+    });
+
+    updateCopy();
+    renderSlide();
+  </script>
+</body>
+</html>

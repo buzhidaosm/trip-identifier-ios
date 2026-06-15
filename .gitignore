@@ -1,0 +1,57 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Xcode / Swift build output
+DerivedData/
+build/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.xcarchive
+*.xcresult
+*.xccheckout
+*.xcscmblueprint
+
+# Swift Package Manager
+.build/
+
+# Dependency build artifacts
+Pods/
+Carthage/Build/
+
+# Fastlane generated files
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+
+# Signing, provisioning, and local secrets
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+*.certSigningRequest
+*.entitlements.local
+.env
+.env.*
+Secrets.plist
+Config.local.plist
+GoogleService-Info.plist
+
+# Editor and AI assistant local state
+.idea/
+.vscode/
+.cursor/
+.windsurf/
+
+# Generated handoff bundles
+exports/*.zip
