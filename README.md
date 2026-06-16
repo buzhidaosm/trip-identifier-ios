@@ -52,6 +52,16 @@ At a high level, the app flow is:
 
 The production implementation includes additional validation, edge-case handling, and proprietary scoring logic that are intentionally not published in this portfolio repository.
 
+## Code Samples
+
+Selected non-sensitive Swift excerpts are available in [`code-samples/`](code-samples/):
+
+- [`VisionOCRSample.swift`](code-samples/VisionOCRSample.swift) - on-device text recognition with Apple Vision.
+- [`LiveActivitySample.swift`](code-samples/LiveActivitySample.swift) - ActivityKit / Live Activity / Dynamic Island presentation.
+- [`SwiftUIDashboardSample.swift`](code-samples/SwiftUIDashboardSample.swift) - SwiftUI state-driven dashboard structure.
+
+These files are trimmed portfolio examples used to demonstrate implementation ability. The full production source code, trip parsing rules, net-value calculations, and proprietary recommendation algorithms are not published.
+
 ## My Role
 
 I independently designed, built, and tested this project end to end.

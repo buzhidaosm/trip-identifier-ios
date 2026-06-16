@@ -1,0 +1,8 @@
+# Keep portfolio design artifacts from dominating GitHub language statistics.
+# The public repo intentionally contains mockups and documentation alongside
+# selected Swift snippets.
+app/** linguist-generated=true
+design-mockups/** linguist-generated=true
+exports/** linguist-generated=true
+design-handoff/** linguist-documentation=true
+docs/** linguist-documentation=true
